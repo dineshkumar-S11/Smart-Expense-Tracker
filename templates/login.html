@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Smart Expense Tracker</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #063b2e, #0b7a4f);
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 20px 55px #002a1d55;
+        }
+        .logo {
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            background: #e3f4ea;
+            color: #087849;
+            border-radius: 16px;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        h1 { margin: 0 0 8px; color: #12382b; font-size: 28px; }
+        .subtitle { color: #738078; margin: 0 0 28px; }
+        label { display: block; margin: 17px 0 8px; font-weight: 600; color: #34463d; }
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dce5df;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+        input:focus { border-color: #0b7a4f; box-shadow: 0 0 0 3px #0b7a4f18; }
+        .password-wrap { position: relative; }
+        .password-wrap input { padding-right: 65px; }
+        .toggle {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%); border: 0;
+            background: none; color: #087849; cursor: pointer;
+        }
+        .submit {
+            width: 100%; padding: 14px; margin-top: 24px;
+            border: 0; border-radius: 10px; background: #0b7a4f;
+            color: white; font-size: 16px; font-weight: 700; cursor: pointer;
+        }
+        .submit:hover { background: #086540; }
+        .submit:disabled { opacity: .65; cursor: wait; }
+        .message { margin-top: 15px; font-size: 14px; line-height: 1.5; }
+        .signup { margin-top: 23px; text-align: center; color: #738078; font-size: 14px; }
+        a { color: #087849; text-decoration: none; font-weight: 700; }
+        a:hover { text-decoration: underline; }
+        .back { display: block; text-align: center; margin-top: 18px; font-size: 13px; color: #738078; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="logo">₹</div>
+        <h1>Welcome back!</h1>
+        <p class="subtitle">Sign in to manage your finances.</p>
+
+        <form id="loginForm">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email"
+                   placeholder="you@example.com" autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <div class="password-wrap">
+                <input id="password" name="password" type="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password" required>
+                <button class="toggle" type="button" id="togglePassword">Show</button>
+            </div>
+
+            <button class="submit" id="submitBtn" type="submit">Sign In</button>
+            <div class="message" id="message" role="status" aria-live="polite"></div>
+        </form>
+
+        <div class="signup">
+            Don't have an account? <a href="/register">Create account</a>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Shown after a successful registration (register page sends us here with ?registered=1)
+        if (new URLSearchParams(window.location.search).get('registered') === '1') {
+            message.style.color = '#087849';
+            message.textContent = 'Registration successful. Please log in.';
+            history.replaceState(null, '', '/login');
+        }
+
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const input = document.getElementById('password');
+            const showing = input.type === 'password';
+            input.type = showing ? 'text' : 'password';
+            this.textContent = showing ? 'Hide' : 'Show';
+        });
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            message.textContent = '';
+            message.style.color = '#b42318';
+            let redirecting = false;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing in...';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value.trim(),
+                        password: document.getElementById('password').value
+                    })
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.message || result.error || 'Login failed. Please try again.');
+                }
+
+                message.style.color = '#087849';
+                message.textContent = 'Login successful! Opening dashboard...';
+                redirecting = true;
+                window.location.replace('/');
+            } catch (error) {
+                message.textContent = error instanceof TypeError
+                    ? 'Could not connect to the server.'
+                    : (error.message || 'Login failed. Please try again.');
+            } finally {
+                if (!redirecting) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Sign In';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

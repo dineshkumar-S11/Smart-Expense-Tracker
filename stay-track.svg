@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06392f"/><stop offset="1" stop-color="#0b5a43"/></linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f9a62"/><stop offset="1" stop-color="#0d5b3a"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.2"/></filter>
+  </defs>
+  <rect width="600" height="420" fill="url(#bg)"/>
+  <g filter="url(#soft)" opacity=".75">
+    <path d="M610 420C520 380 450 300 470 190c70 20 130 100 140 230z" fill="url(#leaf)"/>
+    <path d="M540 430C480 360 420 330 360 345c20 60 90 100 180 85z" fill="#1f8556"/>
+    <path d="M600 300C560 240 520 210 470 210c10 50 60 90 130 90z" fill="#3aa86f" opacity=".7"/>
+    <path d="M430 430c-10-50 10-100 60-130 20 50 5 105-60 130z" fill="#146b45"/>
+  </g>
+  <g stroke="#7fd6a6" stroke-opacity=".35" stroke-width="1.5" fill="none">
+    <path d="M610 410C560 340 520 280 480 200"/><path d="M540 420C490 380 430 360 380 350"/>
+  </g>
+</svg>

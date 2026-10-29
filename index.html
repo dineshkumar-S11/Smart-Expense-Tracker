@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-pending">
+<div class="app">
+
+  <!-- ===== Sidebar (same on every page) ===== -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#/dashboard"><span class="brand-logo" data-icon="wallet" data-size="38"></span><span><strong>Smart</strong><small>Expense Tracker</small></span></a>
+    <nav id="nav">
+      <a class="nav-item" data-page="dashboard" href="#/dashboard"><i data-icon="home"></i>Dashboard</a>
+      <a class="nav-item" data-page="add-expense" href="#/add-expense"><i data-icon="plus"></i>Add Expense</a>
+      <a class="nav-item" data-page="add-income" href="#/add-income"><i data-icon="plus"></i>Add Income</a>
+      <a class="nav-item" data-page="transactions" href="#/transactions"><i data-icon="list"></i>Transactions</a>
+      <a class="nav-item" data-page="budget" href="#/budget"><i data-icon="bars"></i>Budget</a>
+      <a class="nav-item" data-page="categories" href="#/categories"><i data-icon="grid"></i>Categories</a>
+      <a class="nav-item" data-page="reports" href="#/reports"><i data-icon="report"></i>Reports</a>
+      <hr>
+      <a class="nav-item" data-page="profile" href="#/profile"><i data-icon="user"></i>Profile</a>
+      <a class="nav-item" data-page="settings" href="#/settings"><i data-icon="settings"></i>Settings</a>
+      <button class="nav-item" id="logoutBtn" type="button"><i data-icon="logout"></i>Logout</button>
+    </nav>
+    <small class="foot">Personal finance workspace</small>
+  </aside>
+  <div class="backdrop" id="backdrop"></div>
+
+  <main>
+    <!-- ===== Mountain header (same on every page) ===== -->
+    <div class="hero">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu"><i data-icon="menu"></i></button>
+        <label class="month-pill"><i data-icon="calendar" data-size="20"></i><select id="monthSelect" aria-label="Select month"></select><i data-icon="chevron" data-size="16"></i></label>
+        <div class="dropdown" id="bell">
+          <button class="bell-btn" type="button" data-dd aria-label="Notifications" aria-expanded="false"><i data-icon="bell" data-size="24"></i><span class="bell-dot" id="bellDot" hidden></span></button>
+          <div class="dd-menu" id="bellMenu"></div>
+        </div>
+        <div class="dropdown" id="profileMenu">
+          <button class="profile-btn" type="button" data-dd aria-label="Profile menu" aria-expanded="false"><span class="avatar" id="headerAvatar"></span><b id="headerName"></b><i data-icon="chevron" data-size="16"></i></button>
+          <div class="dd-menu right" id="menuProfile">
+            <a class="dd-item" href="#/profile"><i data-icon="user" data-size="18"></i>Profile</a>
+            <a class="dd-item" href="#/settings"><i data-icon="settings" data-size="18"></i>Settings</a>
+            <button class="dd-item" id="menuLogout" type="button"><i data-icon="logout" data-size="18"></i>Logout</button>
+          </div>
+        </div>
+      </header>
+      <div class="page-head"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle"></p></div>
+    </div>
+
+    <!-- ===== Page content is drawn here by js/pages.js ===== -->
+    <div class="view" id="view"></div>
+    <footer>Smart Expense Tracker · Personal finance workspace</footer>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div class="logged-out" id="appError" hidden>
+  <div class="card"><h2>Can’t reach the server</h2><p>Make sure the Flask app is running (<code>python app.py</code>), then try again.</p><button class="btn btn-primary btn-lg" id="reloadBtn" type="button">Try again</button></div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/pages.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
